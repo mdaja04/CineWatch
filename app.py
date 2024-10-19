@@ -1,12 +1,42 @@
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pickle
+from config import TMDB_API_KEY, TMDB_ACCESS_TOKEN
 
 app = Flask(__name__)
 CORS(app)
 
 movies = pickle.load(open("movies_list.pkl", 'rb'))
 similarity = pickle.load(open('similarity.pkl', 'rb'))
+
+
+def fetch_poster(movie_id):
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/images"
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {TMDB_ACCESS_TOKEN}"
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+
+            # Check if 'posters' exists and is not empty
+            if 'posters' in data and len(data['posters']) > 0:
+                # Get the first poster image from the list
+                poster_path = data['posters'][0]['file_path']  # Access the first poster's file path
+                full_poster_url = f"https://image.tmdb.org/t/p/w500{poster_path}"  # TMDB image base URL with size w500
+
+                return full_poster_url  # Return the full poster URL
+            else:
+                return None  # No poster found
+        else:
+            return None  # Handle non-200 responses
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching poster: {e}")
+        return None
 
 
 @app.route('/titles-list', methods=['GET'])
@@ -30,14 +60,16 @@ def get_movie_recommendation():
         recommended_movies = []
         recommended_posters = []
 
-        for i in distances[1:6]:
+
+        for i in distances[1:10]:
             movie_id = movies.iloc[i[0]].id
             recommended_movies.append(movies.iloc[i[0]].title)
-            #recommended_posters.append(fetch_poster(movie_id))
+            recommended_posters.append(fetch_poster(movie_id))
+
 
         return jsonify({
             'movies': recommended_movies,
-            # 'posters': recommended_posters  # Include this if posters are being fetched
+            'posters': recommended_posters
         })
     return jsonify({'error': 'No movie title provided'}), 400
 

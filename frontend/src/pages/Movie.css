@@ -1,0 +1,156 @@
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-size: contain;
+  background-position: center;
+  background-color: #0b0f19;
+  background-blend-mode: darken;
+  padding: 20px;
+  color: white;
+
+}
+
+.background-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: darken;
+  background-color: rgba(11, 15, 25, 0.7);
+}
+
+.content-container {
+  display: flex;
+  width: 80%;
+  max-width: 1200px;
+  padding: 30px;
+}
+
+.poster-container {
+  flex: 1;
+  max-width: 300px;
+}
+
+.poster-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.details-container {
+  flex: 2;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.movie-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.movie-info {
+  display: flex;
+  gap: 15px;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.rating {
+  color: #f5c518;
+}
+
+.year,
+.genre {
+  color: #bbb;
+}
+
+.movie-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.play-button,
+.watchlist-button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.play-button {
+  background-color: #e50914;
+  color: white;
+}
+
+.watchlist-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.play-button:hover,
+.watchlist-button:hover {
+  opacity: 0.9;
+}
+
+.recommendations-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0;
+    gap: 15px;
+    width: 100%;
+    z-index: 1;
+}
+
+
+.recommendations-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+.movie-card {
+    background-color: #303e50;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 0 0 auto;
+    width: 150px;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+.movie-poster {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+#movie-card-title {
+    font-size: 1rem;
+    margin-top: 10px;
+    color: white;
+}

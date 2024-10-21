@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './Home.css'
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [titles, setMovieTitles] = useState([]);
     const [recommendations, setRecommendations] = useState({ movies: [], posters: [] });
     const [showRecommendations, setShowRecommendations] = useState(false);
-
+    const [showSearchResults, setShowSearchResults] = useState(true);
     // Fetch movie titles based on the search query
     const handleSearch = async (query) => {
         setSearchQuery(query);
@@ -32,11 +34,16 @@ const Home = () => {
                 movies: data.movies || [],  // Set movie titles
                 posters: data.posters || []  // Set movie posters
             });
+            setShowSearchResults(false);
             setShowRecommendations(true);  // Hide search results and show recommendations
         } catch (error) {
             console.error('Error fetching recommendations:', error);
         }
     };
+
+    function openMoviePage(movie) {
+        navigate(`/movie/${movie}`, {state : {movie}})
+    }
 
     return (
         <div className="page-container">
@@ -52,7 +59,7 @@ const Home = () => {
                         onChange={(e) => handleSearch(e.target.value)}
                     />
 
-                    {
+                    {showSearchResults && (
                         <div className="search-results">
                             {titles.map((title, index) => (
                                 <li key={index} onClick={() => handleMovieSelect(title)}>
@@ -60,19 +67,19 @@ const Home = () => {
                                 </li>
                             ))}
                         </div>
-                    }
+                    )}
                 </div>
 
                 {showRecommendations && recommendations.movies.length > 0 && (
                     <div className="recommendations-container">
                         {recommendations.movies.map((movie, index) => (
-                            <div key={index} className="movie-card">
+                            <div key={index} className="movie-card" onClick={() => openMoviePage(movie)}>
                                 <img
                                     src={recommendations.posters[index]}
                                     alt={movie}
                                     className="movie-poster"
                                 />
-                                <h2>{movie}</h2>
+                                <label id="movie-card-title">{movie}</label>
                             </div>
                         ))}
                     </div>
